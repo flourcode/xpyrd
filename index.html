@@ -1467,6 +1467,87 @@ input, button, select {
     font-size: 0.8rem;
   }
 }
+.connect-card-compact { 
+  /* Remove background and border to eliminate inner border */
+  padding: 0; 
+  overflow: auto;
+  margin-top: 1rem;
+}
+
+.connect-avatar {
+  float: left;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.connect-avatar img { 
+  width: 50px; 
+  height: 50px; 
+  border-radius: 50%; 
+  object-fit: cover; 
+  border: 2px solid var(--border); 
+  display: block;
+}
+
+.connect-info h4 { 
+  font-size: 1rem; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  margin-bottom: 0.5rem; 
+}
+
+.connect-info p { 
+  font-size: 0.875rem; 
+  color: var(--text-secondary); 
+  margin-bottom: 1rem; 
+  line-height: 1.5; 
+}
+
+.connect-buttons { 
+  display: flex; 
+  gap: 0.75rem; 
+  clear: both;
+} 
+
+/* Mobile adjustments - left justified */
+@media (max-width: 768px) {
+  .connect-avatar {
+    float: left; /* Keep floated for left alignment */
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .connect-avatar img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .connect-info {
+    text-align: left; /* Left justified */
+  }
+  
+  .connect-info h4 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .connect-info p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+  
+  .connect-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start; /* Left align buttons */
+  }
+  
+  .connect-buttons .footer-link {
+    text-align: left;
+    padding: 0.5rem 0;
+  }
+}
   </style>
 </head>
 <body>
@@ -1475,8 +1556,8 @@ input, button, select {
       <div class="hero-logo">
 <h1 class="hero-logo-text" id="heroLogoText">Xpyrd.<span class="logo-period"></span></h1>
       </div>
-      <p class="hero-subtitle">Search Expiring Federal Contracts</p>
-      
+	  <p class="hero-subtitle">Search Expiring Federal Contracts</p>
+      <p class="hero-subtitle">Defend. Attack. Expand.</p>
       <div class="search-container">
         <div class="search-form">
           <div class="input-group">
@@ -1582,6 +1663,7 @@ input, button, select {
   <div class="brand-text-container">
 <h1 class="header-brand-text">Xpyrd.<span class="logo-period"></span></h1>
     <p class="header-subtitle">Search Expiring Federal Contracts</p>
+	<p class="header-subtitle">Defend. Attack. Expand.</p>
   </div>
 </div>
   </div>
@@ -1673,67 +1755,86 @@ input, button, select {
       </div>
     </section>
 	<!-- Footer Section -->
-    <footer class="footer-section">
-      <div class="footer-container">
-        <div class="footer-content">
-          <!-- About Column -->
-          <div class="footer-column">
-            <div class="footer-column-header">
-              <h3 class="footer-brand">Xpyrd.</h3>
+<footer class="footer-section">
+  <div class="footer-container">
+    <div class="footer-content">
+
+      <!-- About Column -->
+      <div class="footer-column">
+        <div class="footer-column-header">
+          <h3 class="footer-brand">About Xpyrd<span class="footer-brand-period">.</span></h3>
+        </div>
+        <div class="footer-column-content">
+          <div class="connect-card-compact">
+            <div class="connect-avatar">
+              <img src="images/oldmark.jpg" alt="Mark's profile picture">
             </div>
-            <div class="footer-column-content">
-              <p>Xpyrd helps businesses discover expiring federal contracts and identify opportunities. Our platform pulls the latest data from USASpending.gov to surface actionable intelligence for government contractors, sales, and BD teams. See your renewals, your competitors’ renewals, and new white space. Turn expiired contracts into pipeline before anyone else.</p>
-              <div class="footer-links">
-                <a href="mailto:hello@xpyrd.com" class="footer-link">
-                  <i class="fas fa-envelope"></i>
-                  hello@xpyrd.com
+            <div class="connect-info">
+              <p>Hi, I'm Mark. I built my sales career at AWS, F5, and Red Hat and before that, I was a DISA COTR and Marine. Along the way I learned the biggest wins often hide in your competitor's expiring contracts and renewal cycles, not RFP chases.</p>
+              <p>That’s why I created <strong>Xpyrd</strong>. It surfaces expiring and expired federal contracts, showing you contract IDs, values, and timelines so you can:</p>
+              <ul>
+                <li><strong>Defend</strong> your renewals</li>
+                <li><strong>Attack</strong> competitor footholds</li>
+                <li><strong>Expand</strong> into new white space</li>
+              </ul>
+              <p>Need help? Schedule a free chat or DM me on LinkedIn.</p>
+
+              <div class="connect-buttons">
+                <a href="https://www.linkedin.com/in/markflournoy/" class="footer-link" target="_blank" rel="noopener">
+                  <i class="fab fa-linkedin"></i> Connect
+                </a>
+                <a href="https://calendly.com/markflournoy/intro" class="footer-link" target="_blank" rel="noopener">
+                  <i class="fas fa-calendar"></i> Chat
                 </a>
               </div>
             </div>
           </div>
-
-          <!-- How to Use Column -->
-          <div class="footer-column">
-            <div class="footer-column-header">
-              <h4 class="footer-heading">How to Use</h4>
-            </div>
-            <div class="footer-column-content">
-              <p>Search for keywords related to your business or technology stack. Filter by contract value and government agency to find relevant opportunities. Export results to CSV for further analysis and business development planning.</p>
-              <ul class="footer-list">
-                <li>Enter relevant keywords or company names</li>
-                <li>Apply filters for value and agency</li>
-                <li>Review expiration dates and priorities</li>
-                <li>Export opportunities for your team</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Who It's For Column -->
-          <div class="footer-column">
-            <div class="footer-column-header">
-              <h4 class="footer-heading">Who It's For</h4>
-            </div>
-            <div class="footer-column-content">
-              <p>Sales teams, business development professionals, and capture managers who need actionable intelligence on federal contract renewals and competitive opportunities.</p>
-              <ul class="footer-list">
-                <li>Defend: Search your company for renewal risks</li>
-                <li>Attack: Find competitor contracts to target</li>
-                <li>Expand: Discover white space opportunities</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-          <div class="footer-bottom-content">
-            <p class="footer-copyright">
-              © 2025 Xpyrd. Data sourced from USASpending.gov
-            </p>
-          </div>
         </div>
       </div>
-    </footer>
+
+      <!-- How to Use Column -->
+      <div class="footer-column">
+        <div class="footer-column-header">
+          <h4 class="footer-heading">How to Use</h4>
+        </div>
+        <div class="footer-column-content">
+          <p>Run a quick search and turn data into action:</p>
+          <ul class="footer-list">
+            <li>Enter keywords, company names, or technologies</li>
+            <li>Filter by contract value or agency</li>
+            <li>Review expiration dates and priorities</li>
+            <li>Export results to CSV and share with your team</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Who It's For Column -->
+      <div class="footer-column">
+        <div class="footer-column-header">
+          <h4 class="footer-heading">Who It’s For</h4>
+        </div>
+        <div class="footer-column-content">
+          <p>Sales teams, business development professionals, and capture managers who need actionable intelligence on federal contract renewals and competitive opportunities.</p>
+          <ul class="footer-list">
+            <li><strong>Defend</strong>: Protect your renewal base</li>
+            <li><strong>Attack</strong>: Target competitor contracts</li>
+            <li><strong>Expand</strong>: Find new agency white space</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p class="footer-copyright">
+          © 2025 Xpyrd. Data sourced from USASpending.gov
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
   </div>
 
   <script>
