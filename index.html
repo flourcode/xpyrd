@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Xpyrd. – Search Expiring Government Contracts</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+/* CSS Variables */
+:root {
+  --primary: #007AFF;
+  --primary-dark: #0A65D1;
+  --success: #34C759;
+  --warning: #FF9500;
+  --danger: #FF3B30;
+  --text-primary: #FFFFFF;
+  --text-secondary: #8E8E93;
+  --text-tertiary: #48484A;
+  --bg-primary: #121212;
+  --bg-secondary: #1C1C1E;
+  --bg-tertiary: #2C2C2E;
+  --bg-card: #1C1C1E;
+  --border: #38383A;
+  --glass-bg: rgba(28, 28, 30, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --radius: 12px;
+  --radius-lg: 20px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+ font-family: 'Atkinson Hyperlegible', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Layout */
+.app-container {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Hero Section */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  position: relative;
+}
+
+.hero-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hero-logo-text {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  margin: 0;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  max-width: 600px;
+  line-height: 1.4;
+}
+
+/* Search Container */
+.search-container {
+  width: 100%;
+  max-width: 800px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-container:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Form Elements */
+.search-form {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.search-form .input-group:first-child {
+  flex: 2;
+}
+
+.search-form .input-group:not(:first-child) {
+  flex: 1;
+}
+
+.input-group {
+  position: relative;
+}
+
+.form-input,
+.form-select,
+.filter-input,
+.filter-select,
+.header-search-input,
+.header-search-select {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: all 0.2s ease;
+  min-height: 44px;
+}
+
+.form-input:focus,
+.form-select:focus,
+.filter-input:focus,
+.filter-select:focus,
+.header-search-input:focus,
+.header-search-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+.form-input::placeholder,
+.header-search-input::placeholder,
+.filter-input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Buttons */
+.search-btn,
+.action-btn,
+.export-btn,
+.header-search-btn {
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-family: inherit;
+}
+
+.search-btn,
+.action-btn.primary,
+.header-search-btn {
+  background: var(--primary);
+  color: white;
+  padding: 1rem 2rem;
+}
+
+.search-btn:hover,
+.action-btn.primary:hover,
+.header-search-btn:hover {
+  transform: translateY(-2px);
+  background: var(--primary-dark);
+}
+
+.action-btn.secondary,
+.export-btn {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+}
+
+.action-btn.secondary:hover,
+.export-btn:hover {
+  background: var(--bg-secondary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.search-btn:active,
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.search-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Loading State */
+.loading-state {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid var(--bg-tertiary);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 2rem;
+}
+
+.loading-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.loading-subtext {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+/* Results Section */
+.results-section {
+  min-height: 100vh;
+  padding: 2rem;
+  background: var(--bg-primary);
+}
+
+/* Results Header */
+.results-header {
+  max-width: 1400px;
+  margin: 0 auto 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 1.5rem;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.header-branding {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-brand-text {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.compact-metrics {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.metric-value {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.metric-urgent {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Integrated Search */
+.integrated-search-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.search-inputs {
+  display: flex;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.header-search-input {
+  flex: 2;
+  background: var(--bg-primary);
+  font-size: 0.9rem;
+  padding: 0.75rem;
+}
+
+.header-search-select {
+  flex: 1;
+  background: var(--bg-primary);
+  font-size: 0.9rem;
+  padding: 0.75rem;
+}
+
+.header-search-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* Opportunities Container */
+.opportunities-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  overflow: hidden;
+}
+
+.opportunities-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-results-summary {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.search-results-summary .search-term {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.search-results-summary .urgent-count {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.opportunities-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.stat-value {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.stat-urgent {
+  color: var(--danger);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+}
+
+.filters-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.filter-input {
+  flex: 2;
+}
+
+.filter-select {
+  flex: 1;
+}
+
+.export-btn {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Table Styles */
+.opportunities-table-container {
+  background: var(--bg-card);
+  overflow-x: auto;
+}
+
+.opportunities-table {
+  width: 100%;
+  border-collapse: collapse;
+  display: table;
+}
+
+.opportunities-table th {
+  background: var(--bg-secondary);
+  padding: 1rem 2rem 1rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+  position: relative;
+  min-height: 40px;
+  vertical-align: baseline;
+}
+
+.opportunities-table th[data-sort] {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.opportunities-table th[data-sort]:hover {
+  color: var(--text-primary);
+}
+
+.sort-icon {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+}
+
+.sort-active {
+  opacity: 1;
+  color: var(--primary);
+}
+
+.opportunities-table td {
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.opportunities-table td * {
+  font-size: 0.9rem !important;
+}
+
+.opportunities-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.opportunities-table tbody tr:hover {
+  background: rgba(0, 122, 255, 0.05);
+}
+
+/* Priority Badges */
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.priority-urgent {
+  background: rgba(255, 59, 48, 0.2);
+  color: var(--danger);
+  border: 1px solid rgba(255, 59, 48, 0.3);
+}
+
+.priority-high {
+  background: rgba(255, 149, 0, 0.2);
+  color: var(--warning);
+  border: 1px solid rgba(255, 149, 0, 0.3);
+}
+
+.priority-medium {
+  background: rgba(0, 122, 255, 0.2);
+  color: var(--primary);
+  border: 1px solid rgba(0, 122, 255, 0.3);
+}
+
+.priority-low {
+  background: rgba(142, 142, 147, 0.2);
+  color: var(--text-secondary);
+  border: 1px solid rgba(142, 142, 147, 0.3);
+}
+
+.priority-expired {
+  background: rgba(128, 128, 128, 0.2);
+  color: #808080;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+/* Vendor and Content Styles */
+.vendor-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vendor-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.vendor-name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.vendor-id {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.contract-value {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.days-remaining {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.days-urgent { color: var(--danger); }
+.days-high { color: var(--warning); }
+.days-medium { color: var(--primary); }
+.days-low { color: var(--text-secondary); }
+.days-expired { color: #808080; }
+
+.expiry-date {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.agency-info {
+  font-weight: 500;
+}
+
+.office-info {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.description-text {
+  line-height: 1.4;
+  max-width: 300px;
+}
+
+.view-award-btn {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.view-award-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+/* Mobile Cards */
+.opportunities-grid {
+  display: none;
+  padding: 1rem;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+}
+
+.opportunity-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.opportunity-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+.opportunity-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+}
+
+.opportunity-card.urgent::before { background: var(--danger); }
+.opportunity-card.high::before { background: var(--warning); }
+.opportunity-card.medium::before { background: var(--primary); }
+.opportunity-card.low::before { background: var(--text-secondary); }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.card-primary-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-vendor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.card-urgency {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius);
+}
+
+.urgency-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.days-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.card-secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.info-value {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.card-description {
+  margin-bottom: 1rem;
+}
+
+.description-preview {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.description-toggle {
+  color: var(--primary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.description-toggle:hover {
+  color: var(--primary-dark);
+}
+
+.description-full {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-top: 0.5rem;
+  display: none;
+}
+
+.description-full.expanded {
+  display: block;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contract-id {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: 'SF Mono', Monaco, monospace;
+}
+
+/* Search Help */
+.search-help {
+  max-width: 800px;
+  margin: 1rem auto 0;
+}
+
+.search-help-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(142, 142, 147, 0.1);
+  border: 1px solid rgba(142, 142, 147, 0.2);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  justify-content: center;
+}
+
+.search-help-toggle:hover {
+  background: rgba(142, 142, 147, 0.15);
+  color: var(--text-primary);
+}
+
+.search-help-content {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.help-item {
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.help-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.help-example {
+  font-family: 'SF Mono', Monaco, monospace;
+  background: rgba(0, 122, 255, 0.1);
+  color: var(--primary);
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.help-description {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+#helpChevron {
+  margin-left: auto;
+  transition: transform 0.2s ease;
+}
+
+.help-expanded #helpChevron {
+  transform: rotate(180deg);
+}
+
+/* Error Message */
+.error-message {
+  background: rgba(255, 59, 48, 0.1);
+  border: 1px solid rgba(255, 59, 48, 0.3);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-top: 1rem;
+  color: var(--danger);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.slide-up {
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideUp 0.6s ease forwards;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .search-form {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  
+  .search-form .input-group:first-child,
+  .search-form .input-group:not(:first-child) {
+    flex: none;
+  }
+  
+  .hero-section {
+    padding: 1rem;
+  }
+  
+  .search-container {
+    padding: 1.5rem;
+  }
+  
+  .results-section {
+    padding: 1rem;
+  }
+
+  .header-top {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .header-left {
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .compact-metrics {
+    justify-content: flex-start;
+  }
+
+  .header-actions {
+    justify-content: flex-start;
+  }
+
+  .opportunities-stats {
+    justify-content: flex-start;
+  }
+  
+  .filters-container {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  .filter-input,
+  .filter-select {
+    flex: none;
+  }
+  
+  .export-btn {
+    margin-left: 0;
+  }
+
+  .filter-select:nth-child(n+3) {
+    display: none;
+  }
+  
+  .opportunities-table-container {
+    display: none;
+  }
+  
+  .opportunities-grid {
+    display: grid;
+  }
+
+  .opportunity-card {
+    padding: 1rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .card-vendor {
+    margin-bottom: 0.75rem;
+  }
+
+  .card-value {
+    text-align: left;
+    font-size: 1.2rem;
+  }
+
+  .card-secondary {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-top: 0.75rem;
+  }
+
+  .card-secondary .info-label {
+    display: none;
+  }
+  
+  .card-secondary .info-value {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    font-weight: 400;
+    line-height: 1.3;
+  }
+
+  .card-secondary .info-item:not(:last-child) .info-value::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background: var(--border);
+    margin-top: 0.5rem;
+    opacity: 0.3;
+  }
+
+  .card-secondary .info-item:nth-child(1),
+  .card-secondary .info-item:nth-child(2),
+  .card-secondary .info-item:nth-child(4) {
+    display: none;
+  }
+
+  .help-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .search-help-content {
+    padding: 1rem;
+  }
+
+  .integrated-search-row {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+  
+  .search-inputs {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  
+  .header-search-input {
+    flex: 1;
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+  
+  .header-search-select {
+    display: none;
+  }
+  
+  .header-search-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+}
+/* Make header search inputs match filter styling */
+.header-search-input,
+.header-search-select {
+  background: var(--bg-tertiary); /* Match the filters' dark background */
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: all 0.2s ease;
+  min-height: 44px;
+}
+
+.header-search-input:focus,
+.header-search-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+.header-search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Ensure consistent proportions */
+.header-search-input {
+  flex: 2;
+}
+
+.header-search-select {
+  flex: 1;
+}
+.hero-logo-text,
+.header-brand-text {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.hero-logo-text:hover,
+.header-brand-text:hover {
+  opacity: 0.8;
+}
+/* Update the search form to better span the container */
+.search-form {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.search-form .input-group:first-child {
+  flex: 3; /* Give more space to search input */
+}
+
+.search-form .input-group:not(:first-child) {
+  flex: 1.5; /* Make dropdowns slightly wider */
+}
+
+/* Make the search button span better */
+.search-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 1rem; /* Add some spacing above button */
+  width: 100%; /* Make button span full width */
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .search-form {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .search-form .input-group:first-child,
+  .search-form .input-group:not(:first-child) {
+    flex: none;
+  }
+  
+  .search-btn {
+    margin-top: 0.5rem;
+  }
+}
+/* Prevent zoom and pan on mobile */
+body {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent double-tap zoom on buttons and inputs */
+input, button, select {
+  touch-action: manipulation;
+}
+
+/* Prevent zoom on input focus */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+}
+/* Style the logo text with red period */
+.hero-logo-text,
+.header-brand-text {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.hero-logo-text:hover,
+.header-brand-text:hover {
+  opacity: 0.8;
+}
+
+
+.hero-logo-text,
+.header-brand-text {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.hero-logo-text:hover,
+.header-brand-text:hover {
+  opacity: 0.8;
+}
+
+
+
+/* Footer Styles */
+.footer-section {
+  background: var(--bg-primary);
+  padding: 4rem 0 2rem;
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.footer-column {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-column:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+.footer-column-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.footer-brand {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.footer-brand-period {
+  color: var(--text-primary);
+}
+
+.footer-heading {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-column-content {
+  line-height: 1.6;
+}
+
+.footer-column-content p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.footer-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.footer-links {
+  margin-top: 1.5rem;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 0.5rem 0;
+}
+
+.footer-link:hover {
+  color: var(--primary-dark);
+  transform: translateX(2px);
+}
+
+.footer-link i {
+  font-size: 0.8rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+}
+
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-copyright {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.footer-bottom-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.footer-version {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+}
+
+/* Footer Mobile Responsive */
+@media (max-width: 768px) {
+  .footer-section {
+    padding: 2rem 0 1.5rem;
+  }
+  
+  .footer-container {
+    padding: 0 1rem;
+  }
+  
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .footer-column {
+    padding: 1.5rem;
+  }
+  
+  .footer-column-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+  }
+  
+  .footer-brand {
+    font-size: 1.5rem;
+  }
+  
+  .footer-heading {
+    font-size: 1rem;
+  }
+  
+  .footer-column-content p {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-list li {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-bottom-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .footer-copyright {
+    font-size: 0.8rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <section class="hero-section" id="heroSection">
+      <div class="hero-logo">
+<h1 class="hero-logo-text" id="heroLogoText">Xpyrd.<span class="logo-period"></span></h1>
+      </div>
+      <p class="hero-subtitle">Search Expiring Federal Contracts</p>
+      
+      <div class="search-container">
+        <div class="search-form">
+          <div class="input-group">
+            <input type="search" id="searchKeywords" class="form-input" placeholder="Search keywords (e.g., amazon, cisco, or cyber security)" />
+          </div>
+          <div class="input-group">
+            <select id="minValue" class="form-select">
+              <option value="">Any Value</option>
+              <option value="100000">$100K+</option>
+              <option value="500000">$500K+</option>
+              <option value="1000000">$1M+</option>
+              <option value="5000000">$5M+</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <select id="agencyName" class="form-select">
+              <option value="">All Agencies</option>
+              <option value="Department of Defense">Defense</option>
+              <option value="Department of Veterans Affairs">Veterans Affairs</option>
+              <option value="Department of Homeland Security">Homeland Security</option>
+              <option value="General Services Administration">GSA</option>
+              <option value="Department of Health and Human Services">Health & Human Services</option>
+              <option value="Department of Energy">Energy</option>
+              <option value="National Aeronautics and Space Administration">NASA</option>
+              <option value="Department of Justice">Justice</option>
+              <option value="Department of State">State</option>
+              <option value="Department of Agriculture">Agriculture</option>
+            </select>
+          </div>
+        </div>
+        
+        <button id="executeSearch" class="search-btn">
+          <i class="fas fa-search"></i>
+          Find Opportunities
+        </button>
+
+        <div class="search-help">
+          <div class="search-help-toggle" id="searchHelpToggle">
+            <i class="fas fa-question-circle"></i>
+            How to search
+            <i class="fas fa-chevron-down" id="helpChevron"></i>
+          </div>
+          
+          <div class="search-help-content hidden" id="searchHelpContent">
+            <div class="help-grid">
+              <div class="help-item">
+                <div class="help-label">Single keyword</div>
+                <div class="help-example">cisco</div>
+                <div class="help-description">Find contracts mentioning cisco</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Multiple keywords (OR)</div>
+                <div class="help-example">cisco, amazon</div>
+                <div class="help-description">Find contracts with cisco OR amazon</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Alternative OR syntax</div>
+                <div class="help-example">cisco or amazon</div>
+                <div class="help-description">Same as above using "or"</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Exact phrases</div>
+                <div class="help-example">"cloud security"</div>
+                <div class="help-description">Find exact phrase in quotes</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Mixed search</div>
+                <div class="help-example">cisco, "cloud security", aws</div>
+                <div class="help-description">Combine phrases and keywords</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Pipe separator</div>
+                <div class="help-example">cisco | amazon | aws</div>
+                <div class="help-description">Another way to search multiple terms</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="errorMessage" class="error-message hidden">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="errorText"></span>
+        </div>
+      </div>
+    </section>
+
+    <div id="loadingState" class="loading-state hidden">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Searching for opportunities...</div>
+      <div class="loading-subtext">Searching contract database...</div>
+    </div>
+
+    <section class="results-section hidden" id="resultsSection">
+<!-- Updated results header with integrated search -->
+<div class="results-header">
+  <div class="header-top">
+   <div class="header-branding">
+  <div class="brand-text-container">
+<h1 class="header-brand-text">Xpyrd.<span class="logo-period"></span></h1>
+    <p class="header-subtitle">Search Expiring Federal Contracts</p>
+  </div>
+</div>
+  </div>
+  
+  <!-- NEW: Integrated search row -->
+  <div class="integrated-search-row">
+    <div class="search-inputs">
+      <input type="search" id="headerSearchKeywords" class="header-search-input" placeholder="Search or start new search..." />
+      <select id="headerMinValue" class="header-search-select">
+        <option value="">Any Value</option>
+        <option value="100000">$100K+</option>
+        <option value="500000">$500K+</option>
+        <option value="1000000">$1M+</option>
+        <option value="5000000">$5M+</option>
+      </select>
+      <select id="headerAgency" class="header-search-select">
+        <option value="">All Agencies</option>
+        <option value="Department of Defense">Defense</option>
+        <option value="Department of Veterans Affairs">Veterans Affairs</option>
+        <option value="Department of Homeland Security">Homeland Security</option>
+        <option value="General Services Administration">GSA</option>
+        <option value="Department of Health and Human Services">Health & Human Services</option>
+        <option value="Department of Energy">Energy</option>
+        <option value="National Aeronautics and Space Administration">NASA</option>
+        <option value="Department of Justice">Justice</option>
+        <option value="Department of State">State</option>
+        <option value="Department of Agriculture">Agriculture</option>
+      </select>
+    </div>
+    <button id="headerSearchBtn" class="header-search-btn">
+      <i class="fas fa-search"></i>
+      Search
+    </button>
+  </div>
+</div>
+
+      <!-- UPDATED: Single unified container with stats replacing title -->
+      <div class="opportunities-container">
+        <div class="opportunities-header">
+  <div class="search-results-summary">
+    <span id="resultsSummary">Loading...</span>
+  </div>
+          
+          <div class="filters-container">
+  <input type="text" id="searchFilter" class="filter-input" placeholder="Filter opportunities...">
+  <select id="priorityFilter" class="filter-select">
+    <option value="">All Priorities</option>
+    <option value="urgent">Urgent (≤30 days)</option>
+    <option value="high">High (31-90 days)</option>
+    <option value="medium">Medium (3-6 months)</option>
+    <option value="low">Low (6+ months)</option>
+  </select>
+  <select id="agencyFilter" class="filter-select">
+    <option value="">All Agencies</option>
+  </select>
+  <select id="competitorFilter" class="filter-select">
+    <option value="">All Vendors</option>
+  </select>
+  
+  <!-- Add export button here -->
+  <button id="exportCSV" class="export-btn">
+    <i class="fas fa-download"></i>
+    Export CSV
+  </button>
+</div>
+        </div>
+        
+        <div class="opportunities-table-container">
+          <table class="opportunities-table">
+            <thead>
+              <tr>
+                <th data-sort="priority">Priority <i class="fas fa-sort sort-icon"></i></th>
+                <th data-sort="daysRemaining">Days Left <i class="fas fa-sort sort-icon"></i></th>
+                <th data-sort="vendor">Current Vendor <i class="fas fa-sort sort-icon"></i></th>
+                <th data-sort="value">Value <i class="fas fa-sort sort-icon"></i></th>
+                <th data-sort="agency">Agency <i class="fas fa-sort sort-icon"></i></th>
+                <th>Description</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="opportunitiesTableBody">
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="opportunities-grid" id="opportunitiesGrid">
+          <!-- Mobile cards will be populated here -->
+        </div>
+      </div>
+    </section>
+	<!-- Footer Section -->
+    <footer class="footer-section">
+      <div class="footer-container">
+        <div class="footer-content">
+          <!-- About Column -->
+          <div class="footer-column">
+            <div class="footer-column-header">
+              <h3 class="footer-brand">Xpyrd.</h3>
+            </div>
+            <div class="footer-column-content">
+              <p>Xpyrd helps businesses discover expiring federal contracts and identify opportunities. Our platform pulls the latest data from USASpending.gov to surface actionable intelligence for government contractors, sales, and BD teams. See your renewals, your competitors’ renewals, and new white space. Turn expiired contracts into pipeline before anyone else.</p>
+              <div class="footer-links">
+                <a href="mailto:hello@xpyrd.com" class="footer-link">
+                  <i class="fas fa-envelope"></i>
+                  hello@xpyrd.com
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- How to Use Column -->
+          <div class="footer-column">
+            <div class="footer-column-header">
+              <h4 class="footer-heading">How to Use</h4>
+            </div>
+            <div class="footer-column-content">
+              <p>Search for keywords related to your business or technology stack. Filter by contract value and government agency to find relevant opportunities. Export results to CSV for further analysis and business development planning.</p>
+              <ul class="footer-list">
+                <li>Enter relevant keywords or company names</li>
+                <li>Apply filters for value and agency</li>
+                <li>Review expiration dates and priorities</li>
+                <li>Export opportunities for your team</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Who It's For Column -->
+          <div class="footer-column">
+            <div class="footer-column-header">
+              <h4 class="footer-heading">Who It's For</h4>
+            </div>
+            <div class="footer-column-content">
+              <p>Sales teams, business development professionals, and capture managers who need actionable intelligence on federal contract renewals and competitive opportunities.</p>
+              <ul class="footer-list">
+                <li>Defend: Search your company for renewal risks</li>
+                <li>Attack: Find competitor contracts to target</li>
+                <li>Expand: Discover white space opportunities</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+          <div class="footer-bottom-content">
+            <p class="footer-copyright">
+              © 2025 Xpyrd. Data sourced from USASpending.gov
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Application State
+    const app = {
+      opportunities: [],
+      filteredOpportunities: [],
+      competitors: new Map(),
+      agencies: new Map(),
+      currentSort: { column: 'daysRemaining', direction: 'asc' },
+      filters: {
+        search: '',
+        priority: '',
+        competitor: '',
+        agency: ''
+      }
+    };
+
+    // Utility Functions
+    const utils = {
+      debounce(func, delay) {
+        let timeout;
+        return function(...args) {
+          const context = this;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(context, args), delay);
+        };
+      },
+      
+      formatMoney(value) {
+        if (!value && value !== 0) return '$0';
+        const num = parseFloat(value);
+        if (isNaN(num)) return '$0';
+        
+        const abs = Math.abs(num);
+        if (abs >= 1e9) return '$' + (num / 1e9).toFixed(1) + 'B';
+        if (abs >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+        if (abs >= 1e3) return '$' + (num / 1e3).toFixed(1) + 'K';
+        return '$' + num.toLocaleString();
+      },
+
+      formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        return isNaN(date.getTime()) ? 'N/A' : date.toLocaleDateString();
+      },
+
+      getInitials(name) {
+        if (!name) return '?';
+        const words = name.split(' ').filter(w => w.length > 0);
+        if (words.length === 1) return words[0].charAt(0).toUpperCase();
+        return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
+      },
+
+      getColorForVendor(vendor) {
+        const colors = ['#007AFF', '#34C759', '#FF9500', '#FF3B30', '#AF52DE', '#00D2FF'];
+        let hash = 0;
+        for (let i = 0; i < vendor.length; i++) {
+          hash = vendor.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return colors[Math.abs(hash) % colors.length];
+      },
+
+      truncateText(text, maxLength) {
+        if (!text) return '';
+        return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+      },
+
+      getDaysUntilDate(dateString) {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return null;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const diff = Math.ceil((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        return diff;
+      },
+
+      getPriority(daysRemaining) {
+  if (daysRemaining < 0) return { level: 'expired', label: 'EXPIRED' };
+  if (daysRemaining <= 30) return { level: 'urgent', label: 'URGENT' };
+  if (daysRemaining <= 90) return { level: 'high', label: 'HIGH' };
+  if (daysRemaining <= 180) return { level: 'medium', label: 'MEDIUM' };
+  return { level: 'low', label: 'LOW' };
+}
+    };
+
+const usaSpendingAPI = {
+  async searchContracts(searchParams) {
+    const awardSearchProxyUrl = 'https://vt44ebi3jj.execute-api.us-east-1.amazonaws.com/default/award-search-proxy';
+
+    let keywordsArray = [];
+    if (searchParams.keywords) {
+      const splitKeywords = searchParams.keywords
+        .split(/,|\bor\b|\||\;/i)
+        .map(keyword => keyword.trim().replace(/^["']|["']$/g, ''))
+        .filter(keyword => keyword.length > 0);
+      
+      keywordsArray = splitKeywords.length > 1 ? splitKeywords : [searchParams.keywords.trim()];
+    }
+
+    const requestBody = {
+      filters: {
+        award_type_codes: ['A', 'B', 'C', 'D'],
+        keywords: keywordsArray.length > 0 ? keywordsArray : undefined,
+        award_amounts: searchParams.minValue ? [{ lower_bound: parseInt(searchParams.minValue) }] : undefined,
+        agencies: searchParams.agency ? [{ type: "awarding", tier: "toptier", name: searchParams.agency }] : undefined
+      },
+      fields: [
+  "Award ID",
+  "Recipient Name",
+  "Start Date",
+  "End Date", 
+  "Award Amount",
+  "Awarding Agency",
+  "Awarding Sub Agency",
+  "Description", 
+  "generated_internal_id"
+],
+      page: 1,
+      limit: 100,
+      sort: "Award Amount",
+      order: "desc"
+    };
+
+    try {
+      const response = await fetch(awardSearchProxyUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+      const data = await response.json();
+      if (!response.ok) { throw new Error(data.detail || data.error); }
+      return await this.transformAPIResponse(data);
+    } catch (error) {
+      console.error('USASpending API call failed:', error);
+      throw new Error(`Search failed: ${error.message}`);
+    }
+  },
+
+  async transformAPIResponse(apiData) {
+  if (!apiData.results || !Array.isArray(apiData.results)) {
+    throw new Error('Invalid API response format');
+  }
+
+  let opportunities = apiData.results.map(record => {
+    const popEndDate = record["End Date"];
+    if (!popEndDate) return null;
+    const daysRemaining = utils.getDaysUntilDate(popEndDate);
+    
+    if (daysRemaining === null || daysRemaining < -30 || daysRemaining > 730) return null;
+
+    return {
+      id: record["Award ID"],
+      internalId: record["generated_internal_id"],
+      vendor: record["Recipient Name"] || 'Unknown Vendor',
+      agency: record["Awarding Agency"] || 'Unknown Agency',
+      office: record["Awarding Sub Agency"] || 'Unknown Office',
+      value: parseFloat(record["Award Amount"]) || 0,
+      description: record["Description"] || 'No description available',
+      awardLink: record["generated_internal_id"] ? `https://www.usaspending.gov/award/${record["generated_internal_id"]}/` : null,
+      popEndDate: popEndDate,
+      daysRemaining: daysRemaining,
+      priority: utils.getPriority(daysRemaining),
+      awardDate: record["Start Date"] || ''
+    };
+  }).filter(Boolean);
+
+  if (opportunities.length === 0) {
+    throw new Error('No contracts found with upcoming renewal dates');
+  }
+
+  const seen = new Set();
+  const dedupedOpportunities = [];
+  
+  for (const opp of opportunities) {
+    if (!seen.has(opp.id)) {
+      seen.add(opp.id);
+      dedupedOpportunities.push(opp);
+    }
+  }
+  
+  return dedupedOpportunities;
+}
+};    
+
+    // UI Management
+    const ui = {
+      showState(state) {
+        const heroSection = document.getElementById('heroSection');
+        const loadingState = document.getElementById('loadingState');
+        const resultsSection = document.getElementById('resultsSection');
+        
+        heroSection.style.display = state === 'hero' ? 'flex' : 'none';
+        loadingState.classList.toggle('hidden', state !== 'loading');
+        resultsSection.classList.toggle('hidden', state !== 'results');
+        
+        if (state === 'results') {
+          resultsSection.classList.add('fade-in');
+        }
+      },
+
+      showError(message) {
+        document.getElementById('errorText').textContent = message;
+        document.getElementById('errorMessage').classList.remove('hidden');
+      },
+
+      hideError() {
+        document.getElementById('errorMessage').classList.add('hidden');
+      },
+
+      updateSortIcons(column, direction) {
+        document.querySelectorAll('.sort-icon').forEach(icon => {
+          icon.className = 'fas fa-sort sort-icon';
+          icon.parentElement.classList.remove('sort-active');
+        });
+        
+        const activeIcon = document.querySelector(`th[data-sort="${column}"] .sort-icon`);
+        if (activeIcon) {
+          activeIcon.className = `fas fa-sort-${direction === 'asc' ? 'up' : 'down'} sort-icon sort-active`;
+          activeIcon.parentElement.classList.add('sort-active');
+        }
+      },
+
+      updateMetrics() {
+  const opps = app.filteredOpportunities;
+  const totalValue = opps.reduce((sum, opp) => sum + opp.value, 0);
+  
+  // Get current search terms
+  const heroKeywords = document.getElementById('searchKeywords').value.trim();
+  const headerKeywords = document.getElementById('headerSearchKeywords')?.value.trim();
+  const currentKeywords = headerKeywords || heroKeywords;
+  
+  // Build the summary sentence
+  let summary = `We found ${opps.length.toLocaleString()} expiring opportunities with a total value of ${utils.formatMoney(totalValue)}`;
+  
+  if (currentKeywords) {
+    summary += ` for  "${currentKeywords}"`;
+  }
+  
+  summary += '.';
+  
+  document.getElementById('resultsSummary').textContent = summary; // Use textContent instead of innerHTML
+},
+
+      updateOpportunitiesTable() {
+  const tbody = document.getElementById('opportunitiesTableBody');
+  const opportunities = app.filteredOpportunities;
+
+  if (opportunities.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+          No opportunities found matching current filters
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = opportunities.map(opp => {
+    const priorityClass = `priority-${opp.priority.level}`;
+    const daysClass = `days-${opp.priority.level}`;
+    
+    // Handle expired vs active contracts
+    let daysDisplay, dateDisplay;
+    if (opp.daysRemaining < 0) {
+      const daysAgo = Math.abs(opp.daysRemaining);
+      daysDisplay = `${daysAgo} day${daysAgo === 1 ? '' : 's'} ago`;
+      dateDisplay = `Expired ${utils.formatDate(opp.popEndDate)}`;
+    } else {
+      daysDisplay = `${opp.daysRemaining} days`;
+      dateDisplay = `Expires ${utils.formatDate(opp.popEndDate)}`;
+    }
+    
+    return `
+      <tr class="slide-up">
+        <td>
+          <span class="priority-badge ${priorityClass}">${opp.priority.label}</span>
+        </td>
+        <td>
+          <div class="days-remaining ${daysClass}">${daysDisplay}</div>
+          <div class="expiry-date">${dateDisplay}</div>
+        </td>
+        <!-- rest of the row unchanged -->
+        <td>
+          <div class="vendor-info">
+            <div class="vendor-avatar" style="background: ${utils.getColorForVendor(opp.vendor)}">
+              ${utils.getInitials(opp.vendor)}
+            </div>
+            <div>
+              <div class="vendor-name">${utils.truncateText(opp.vendor, 30)}</div>
+              <div class="vendor-id">${utils.truncateText(opp.id, 25)}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="contract-value">${utils.formatMoney(opp.value)}</div>
+        </td>
+        <td>
+          <div class="agency-info">${utils.truncateText(opp.agency, 25)}</div>
+          <div class="office-info">${utils.truncateText(opp.office, 25)}</div>
+        </td>
+        <td>
+          <div class="description-text">${utils.truncateText(opp.description, 120)}</div>
+        </td>
+        <td>
+          ${opp.awardLink ? `<a href="${opp.awardLink}" target="_blank" class="view-award-btn"><i class="fas fa-external-link-alt"></i> View</a>` : ''}
+        </td>
+      </tr>
+    `;
+  }).join('');
+},
+
+      // Mobile card update
+      updateOpportunitiesGrid() {
+        const grid = document.getElementById('opportunitiesGrid');
+        const opportunities = app.filteredOpportunities;
+
+        if (opportunities.length === 0) {
+          grid.innerHTML = `
+            <div style="text-align: center; padding: 3rem; color: var(--text-secondary); grid-column: 1 / -1;">
+              No opportunities found matching current filters
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = opportunities.map(opp => {
+          const priorityClass = opp.priority.level;
+          const daysClass = `days-${opp.priority.level}`;
+          const descriptionPreview = utils.truncateText(opp.description, 120);
+          const hasMoreDescription = opp.description.length > 120;
+          
+          const vendorTitle = (opp.vendor || '').replace(/"/g, '&quot;');
+          const agencyTitle = (opp.agency || '').replace(/"/g, '&quot;');
+          const officeTitle = (opp.office || '').replace(/"/g, '&quot;');
+          const idTitle = (opp.id || '').replace(/"/g, '&quot;');
+          
+          return `
+            <div class="opportunity-card ${priorityClass} slide-up">
+              <div class="card-header">
+                <div class="card-primary-info">
+                  <div class="card-vendor">
+                    <div class="vendor-avatar" style="background: ${utils.getColorForVendor(opp.vendor)}">
+                      ${utils.getInitials(opp.vendor)}
+                    </div>
+                    <div class="vendor-name" title="${vendorTitle}">${utils.truncateText(opp.vendor, 35)}</div>
+                  </div>
+                </div>
+                <div class="card-value">${utils.formatMoney(opp.value)}</div>
+              </div>
+<div class="urgency-info">
+  <div class="days-remaining ${daysClass}">
+    ${opp.daysRemaining < 0 ? 
+      `${Math.abs(opp.daysRemaining)} day${Math.abs(opp.daysRemaining) === 1 ? '' : 's'} ago` : 
+      opp.daysRemaining
+    }
+  </div>
+  <div class="days-label">${opp.daysRemaining < 0 ? 'expired' : 'days left'}</div>
+</div>
+
+              <div class="card-secondary">
+                <div class="info-item">
+                  <div class="info-label">Agency</div>
+                  <div class="info-value" title="${agencyTitle}">${utils.truncateText(opp.agency, 40)}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Expires</div>
+                  <div class="info-value">${utils.formatDate(opp.popEndDate)}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Office</div>
+                  <div class="info-value" title="${officeTitle}">${utils.truncateText(opp.office, 40)}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Contract ID</div>
+                  <div class="info-value contract-id" title="${idTitle}">${utils.truncateText(opp.id, 15)}</div>
+                </div>
+              </div>
+
+              <div class="card-description">
+                <div class="description-preview">${descriptionPreview}</div>
+                ${hasMoreDescription ? `
+                  <div class="description-toggle" onclick="toggleDescription(this)">
+                    Show more
+                  </div>
+                  <div class="description-full">
+                    ${opp.description}
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="card-actions">
+                ${opp.awardLink ? `
+                  <a href="${opp.awardLink}" target="_blank" class="view-award-btn">
+                    <i class="fas fa-external-link-alt"></i> View Award
+                  </a>
+                ` : '<div></div>'}
+              </div>
+            </div>
+          `;
+        }).join('');
+      },
+
+      updateFilters() {
+        const competitorSelect = document.getElementById('competitorFilter');
+        competitorSelect.innerHTML = '<option value="">All Vendors</option>';
+        
+        Array.from(app.competitors.values())
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .forEach(competitor => {
+            const option = document.createElement('option');
+            option.value = competitor.name;
+            option.textContent = `${utils.truncateText(competitor.name, 30)} (${competitor.opportunities})`;
+            competitorSelect.appendChild(option);
+          });
+        
+        const agencySelect = document.getElementById('agencyFilter');
+        agencySelect.innerHTML = '<option value="">All Agencies</option>';
+        
+        Array.from(app.agencies.values())
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .forEach(agency => {
+            const option = document.createElement('option');
+            option.value = agency.name;
+            option.textContent = `${utils.truncateText(agency.name, 30)} (${agency.opportunities})`;
+            agencySelect.appendChild(option);
+          });
+      }
+    };
+
+    // Global function for description toggle
+    window.toggleDescription = function(element) {
+      const fullDescription = element.nextElementSibling;
+      const isExpanded = fullDescription.classList.contains('expanded');
+      
+      if (isExpanded) {
+        fullDescription.classList.remove('expanded');
+        element.textContent = 'Show more';
+      } else {
+        fullDescription.classList.add('expanded');
+        element.textContent = 'Show less';
+      }
+    };
+
+    // Filtering and Sorting
+    const filtering = {
+      sortBy(column) {
+        if (app.currentSort.column === column) {
+          app.currentSort.direction = app.currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+          app.currentSort = { column, direction: 'asc' };
+        }
+        ui.updateSortIcons(app.currentSort.column, app.currentSort.direction);
+        this.applyFilters();
+      },
+
+      applySorting() {
+        const { column, direction } = app.currentSort;
+        const multiplier = direction === 'asc' ? 1 : -1;
+
+        app.filteredOpportunities.sort((a, b) => {
+          let valA, valB;
+
+          switch (column) {
+            case 'priority':
+              const order = { urgent: 0, high: 1, medium: 2, low: 3 };
+              valA = order[a.priority.level];
+              valB = order[b.priority.level];
+              break;
+            default:
+              valA = a[column];
+              valB = b[column];
+          }
+
+          if (typeof valA === 'string') {
+            return valA.localeCompare(valB) * multiplier;
+          } else {
+            return (valA - valB) * multiplier;
+          }
+        });
+      },
+      
+      applyFilters() {
+        let filtered = [...app.opportunities];
+        
+        if (app.filters.search && app.filters.search.trim() !== '') {
+          const term = app.filters.search.toLowerCase().trim();
+          filtered = filtered.filter(opp => 
+            (opp.vendor && opp.vendor.toLowerCase().includes(term)) ||
+            (opp.agency && opp.agency.toLowerCase().includes(term)) ||
+            (opp.description && opp.description.toLowerCase().includes(term)) ||
+            (opp.id && opp.id.toLowerCase().includes(term))
+          );
+        }
+        
+        if (app.filters.priority && app.filters.priority !== '') {
+          filtered = filtered.filter(opp => opp.priority && opp.priority.level === app.filters.priority);
+        }
+        
+        if (app.filters.competitor && app.filters.competitor !== '') {
+          filtered = filtered.filter(opp => opp.vendor === app.filters.competitor);
+        }
+        
+        if (app.filters.agency && app.filters.agency !== '') {
+          filtered = filtered.filter(opp => opp.agency === app.filters.agency);
+        }
+        
+        app.filteredOpportunities = filtered;
+        this.applySorting();
+        ui.updateMetrics(); // Updated to handle both metric sets
+        ui.updateOpportunitiesTable();
+        ui.updateOpportunitiesGrid();
+      }
+    };
+
+    // Data Analysis
+    const analysis = {
+      analyzeCompetitors() {
+        app.competitors.clear();
+        app.agencies.clear();
+        
+        app.opportunities.forEach(opp => {
+          if (!app.competitors.has(opp.vendor)) {
+            app.competitors.set(opp.vendor, {
+              name: opp.vendor,
+              opportunities: 0,
+              totalValue: 0
+            });
+          }
+          
+          const competitor = app.competitors.get(opp.vendor);
+          competitor.opportunities++;
+          competitor.totalValue += opp.value;
+          
+          if (!app.agencies.has(opp.agency)) {
+            app.agencies.set(opp.agency, {
+              name: opp.agency,
+              opportunities: 0,
+              totalValue: 0
+            });
+          }
+          
+          const agency = app.agencies.get(opp.agency);
+          agency.opportunities++;
+          agency.totalValue += opp.value;
+        });
+      }
+    };
+
+    // Export functionality
+    const exportData = {
+      exportToCSV() {
+        const headers = [
+          'Priority',
+          'Days Remaining',
+          'Expiration Date',
+          'Current Vendor',
+          'Contract Value',
+          'Agency',
+          'Office',
+          'Contract ID',
+          'Description',
+          'Award Date',
+          'USASpending Link'
+        ];
+        
+        const csvContent = [
+          headers.join(','),
+          ...app.filteredOpportunities.map(opp => [
+            opp.priority.label,
+            opp.daysRemaining,
+            utils.formatDate(opp.popEndDate),
+            `"${(opp.vendor || '').replace(/"/g, '""')}"`,
+            opp.value,
+            `"${(opp.agency || '').replace(/"/g, '""')}"`,
+            `"${(opp.office || '').replace(/"/g, '""')}"`,
+            opp.id,
+            `"${(opp.description || '').replace(/"/g, '""')}"`,
+            utils.formatDate(opp.awardDate),
+            opp.awardLink || ''
+          ].join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", `contract-opportunities-${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    };
+
+   // Search Functions
+async function executeUSASpendingSearch() {
+  const keywords = document.getElementById('searchKeywords').value.trim();
+  const minValue = document.getElementById('minValue').value;
+  const agencyName = document.getElementById('agencyName').value.trim();
+
+  if (!keywords) {
+    ui.showError('Please enter search keywords');
+    return;
+  }
+
+  ui.hideError();
+  ui.showState('loading');
+  document.getElementById('executeSearch').disabled = true;
+
+  try {
+    const opportunities = await usaSpendingAPI.searchContracts({
+      keywords,
+      minValue,
+      agency: agencyName || undefined
+    });
+
+    if (opportunities.length === 0) {
+      throw new Error(`No renewal opportunities found for "${keywords}"`);
+    }
+
+    app.opportunities = opportunities;
+    app.filteredOpportunities = [...app.opportunities];
+    
+    analysis.analyzeCompetitors();
+    ui.updateFilters();
+    filtering.applyFilters();
+    ui.showState('results');
+    
+    // Replace the setTimeout block with this:
+setTimeout(() => {
+  const headerSearchBtn = document.getElementById('headerSearchBtn');
+  const headerSearchKeywords = document.getElementById('headerSearchKeywords');
+  
+  if (headerSearchBtn && headerSearchKeywords) {
+    // Clear any existing event handlers
+    headerSearchBtn.onclick = null;
+    headerSearchKeywords.onkeypress = null;
+    
+    // Set new event handlers
+    headerSearchBtn.onclick = executeHeaderSearch;
+    headerSearchKeywords.onkeypress = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        executeHeaderSearch();
+      }
+    };
+    
+  } else {
+  }
+}, 100);
+    
+  } catch (error) {
+    console.error('Search error:', error);
+    ui.showError(`Search failed: ${error.message}`);
+    ui.showState('hero');
+  } finally {
+    document.getElementById('executeSearch').disabled = false;
+  }
+}
+
+async function executeHeaderSearch() {
+  const keywords = document.getElementById('headerSearchKeywords').value.trim();
+  const minValue = document.getElementById('headerMinValue').value;
+  const agencyName = document.getElementById('headerAgency').value.trim();
+
+  if (!keywords) {
+    // If no keywords, just focus the input
+    document.getElementById('headerSearchKeywords').focus();
+    return;
+  }
+
+  document.getElementById('headerSearchBtn').disabled = true;
+  document.getElementById('headerSearchBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+
+  try {
+    const opportunities = await usaSpendingAPI.searchContracts({
+      keywords,
+      minValue,
+      agency: agencyName || undefined
+    });
+
+    if (opportunities.length === 0) {
+      throw new Error(`No renewal opportunities found for "${keywords}"`);
+    }
+
+    app.opportunities = opportunities;
+    app.filteredOpportunities = [...app.opportunities];
+    
+    analysis.analyzeCompetitors();
+    ui.updateFilters();
+    filtering.applyFilters();
+    
+    // Clear any existing filter values
+    document.getElementById('searchFilter').value = '';
+    app.filters = { search: '', priority: '', competitor: '', agency: '' };
+    
+  } catch (error) {
+    console.error('Header search error:', error);
+    // Show error briefly in the button
+    document.getElementById('headerSearchBtn').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+    setTimeout(() => {
+      document.getElementById('headerSearchBtn').innerHTML = '<i class="fas fa-search"></i> Search';
+    }, 2000);
+  } finally {
+    document.getElementById('headerSearchBtn').disabled = false;
+    document.getElementById('headerSearchBtn').innerHTML = '<i class="fas fa-search"></i> Search';
+  }
+}
+function getCurrentSearchSummary() {
+  // Get the original search terms (from hero section initially, then from header)
+  const heroKeywords = document.getElementById('searchKeywords').value.trim();
+  const headerKeywords = document.getElementById('headerSearchKeywords')?.value.trim();
+  const currentKeywords = headerKeywords || heroKeywords;
+  
+  const minValue = document.getElementById('headerMinValue')?.value || document.getElementById('minValue').value;
+  const agency = document.getElementById('headerAgency')?.value || document.getElementById('agencyName').value;
+  
+  let summary = [];
+  
+  if (currentKeywords) {
+    summary.push(`"${currentKeywords}"`);
+  }
+  
+  if (minValue) {
+    const valueLabels = {
+      '100000': '$100K+',
+      '500000': '$500K+', 
+      '1000000': '$1M+',
+      '5000000': '$5M+'
+    };
+    summary.push(valueLabels[minValue] || minValue);
+  }
+  
+  if (agency) {
+    const shortAgencyNames = {
+      'Department of Defense': 'Defense',
+      'Department of Veterans Affairs': 'VA',
+      'Department of Homeland Security': 'DHS',
+      'General Services Administration': 'GSA',
+      'Department of Health and Human Services': 'HHS',
+      'Department of Energy': 'Energy',
+      'National Aeronautics and Space Administration': 'NASA',
+      'Department of Justice': 'Justice',
+      'Department of State': 'State',
+      'Department of Agriculture': 'Agriculture'
+    };
+    summary.push(shortAgencyNames[agency] || agency);
+  }
+  
+  return summary.length > 0 ? ` • ${summary.join(' • ')}` : '';
+}
+// Reset to onload state function
+function resetToOnloadState() {
+  // Clear all form inputs
+  document.getElementById('searchKeywords').value = '';
+  document.getElementById('minValue').value = '';
+  document.getElementById('agencyName').value = '';
+  
+  // Clear header search inputs if they exist
+  const headerKeywords = document.getElementById('headerSearchKeywords');
+  const headerMinValue = document.getElementById('headerMinValue');
+  const headerAgency = document.getElementById('headerAgency');
+  
+  if (headerKeywords) headerKeywords.value = '';
+  if (headerMinValue) headerMinValue.value = '';
+  if (headerAgency) headerAgency.value = '';
+  
+  // Clear filter inputs if they exist
+  const searchFilter = document.getElementById('searchFilter');
+  const priorityFilter = document.getElementById('priorityFilter');
+  const competitorFilter = document.getElementById('competitorFilter');
+  const agencyFilter = document.getElementById('agencyFilter');
+  
+  if (searchFilter) searchFilter.value = '';
+  if (priorityFilter) priorityFilter.value = '';
+  if (competitorFilter) competitorFilter.value = '';
+  if (agencyFilter) agencyFilter.value = '';
+  
+  // Reset app state
+  app.filters = { search: '', priority: '', competitor: '', agency: '' };
+  app.opportunities = [];
+  app.filteredOpportunities = [];
+  
+  // Hide error message
+  ui.hideError();
+  
+  // Return to hero state
+  ui.showState('hero');
+}
+
+// Event Handlers
+function setupEventHandlers() {
+  document.getElementById('executeSearch').addEventListener('click', executeUSASpendingSearch);
+  
+  // Logo click handlers - return to onload state
+  const heroLogoText = document.querySelector('.hero-logo-text');
+  if (heroLogoText) {
+    heroLogoText.addEventListener('click', resetToOnloadState);
+  }
+  
+  const headerBrandText = document.querySelector('.header-brand-text');
+  if (headerBrandText) {
+    headerBrandText.addEventListener('click', resetToOnloadState);
+  }
+  
+  // Only attach if element exists
+  const newSearchBtn = document.getElementById('newSearch');
+  if (newSearchBtn) {
+    newSearchBtn.addEventListener('click', resetToOnloadState);
+  }
+
+  document.getElementById('searchHelpToggle').addEventListener('click', () => {
+    const content = document.getElementById('searchHelpContent');
+    const toggle = document.getElementById('searchHelpToggle');
+    
+    content.classList.toggle('hidden');
+    toggle.classList.toggle('help-expanded');
+  });
+
+  // Only attach if element exists
+  const exportBtn = document.getElementById('exportCSV');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', exportData.exportToCSV);
+  }
+  
+  document.getElementById('searchKeywords').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      executeUSASpendingSearch();
+    }
+  });
+  
+  document.getElementById('searchKeywords').addEventListener('input', () => {
+    ui.hideError();
+  });
+  
+  // Only attach if elements exist
+  const searchFilter = document.getElementById('searchFilter');
+  if (searchFilter) {
+    searchFilter.addEventListener('input', utils.debounce((e) => {
+      app.filters.search = e.target.value;
+      filtering.applyFilters();
+    }, 300));
+  }
+  
+  const priorityFilter = document.getElementById('priorityFilter');
+  if (priorityFilter) {
+    priorityFilter.addEventListener('change', (e) => {
+      app.filters.priority = e.target.value;
+      filtering.applyFilters();
+    });
+  }
+  
+  const competitorFilter = document.getElementById('competitorFilter');
+  if (competitorFilter) {
+    competitorFilter.addEventListener('change', (e) => {
+      app.filters.competitor = e.target.value;
+      filtering.applyFilters();
+    });
+  }
+  
+  const agencyFilter = document.getElementById('agencyFilter');
+  if (agencyFilter) {
+    agencyFilter.addEventListener('change', (e) => {
+      app.filters.agency = e.target.value;
+      filtering.applyFilters();
+    });
+  }
+
+  // Event listeners for table sorting - only if table exists
+  const sortHeaders = document.querySelectorAll('th[data-sort]');
+  if (sortHeaders.length > 0) {
+    sortHeaders.forEach(th => {
+      th.addEventListener('click', () => {
+        filtering.sortBy(th.dataset.sort);
+      });
+    });
+  }
+}
+
+function clearAllSearchInputs() {
+  // Clear hero section search inputs
+  document.getElementById('searchKeywords').value = '';
+  document.getElementById('minValue').value = '';
+  document.getElementById('agencyName').value = '';
+  
+  // Clear header search inputs if they exist
+  const headerKeywords = document.getElementById('headerSearchKeywords');
+  const headerMinValue = document.getElementById('headerMinValue');
+  const headerAgency = document.getElementById('headerAgency');
+  
+  if (headerKeywords) headerKeywords.value = '';
+  if (headerMinValue) headerMinValue.value = '';
+  if (headerAgency) headerAgency.value = '';
+  
+  // Clear filter inputs if they exist
+  const searchFilter = document.getElementById('searchFilter');
+  if (searchFilter) searchFilter.value = '';
+}
+
+// Initialize Application
+document.addEventListener('DOMContentLoaded', () => {
+  setupEventHandlers();
+  clearAllSearchInputs();
+  ui.showState('hero');
+});
+  </script>
+</body>
+</html>
