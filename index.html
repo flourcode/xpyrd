@@ -1984,7 +1984,7 @@ const usaSpendingAPI = {
     if (!popEndDate) return null;
     const daysRemaining = utils.getDaysUntilDate(popEndDate);
     
-    if (daysRemaining === null || daysRemaining < -30 || daysRemaining > 730) return null;
+    if (daysRemaining === null || daysRemaining < -90 || daysRemaining > 730) return null;
 
     return {
       id: record["Award ID"],
